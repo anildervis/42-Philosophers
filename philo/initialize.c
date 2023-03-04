@@ -26,23 +26,22 @@ void	init_args(int ac, char **av, t_args *args)
 		philosophers[i]->philo_thread = (pthread_t *)malloc(sizeof(pthread_t));
 		philosophers[i]->args = args;
 		philosophers[i]->last_meal_time = get_miliseconds();
-		forks[i] = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+		forks[i] = (pthread_mutex_t *)malloc(sizeof(args->number_of_philosophers));
 	}
 	args->start_time = get_miliseconds();
 	args->philosophers = philosophers;
 	args->forks = forks;
-	args->report = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	pthread_mutex_init(args->report, NULL); 
+	pthread_mutex_init(&args->report, NULL); 
 	i = -1;
 	while (++i < args->number_of_philosophers)
 	{
-		pthread_create(philosophers[i]->philo_thread, NULL, eat_sleep_think, philosophers);
+		pthread_create(philosophers[i]->philo_thread, NULL, routine, philosophers);
 		pthread_mutex_init(forks[i], NULL);
 	}
 	i = -1;
 	while (++i < args->number_of_philosophers)
 		pthread_join(philosophers[i], NULL);
 	while (--i >= 0)
-		pthread_mutex_destroy(args->forks[i]);
-	pthread_mutex_destroy(args->report);
+		pthread_mutex_destroy(&args->forks[i]);
+	pthread_mutex_destroy(&args->report);
 }

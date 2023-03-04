@@ -7,6 +7,12 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+#define PRINT_FORK 1
+#define PRINT_EAT 2
+#define PRINT_SLEEP 3
+#define PRINT_THINK 4
+#define PRINT_DIE 5
+
 typedef struct s_philo
 {
     int				id;
@@ -42,6 +48,6 @@ int		ft_atoi(char *str);
 void	init_args(int ac, char **av, t_args *args);
 
 // -------------- main.c --------------
-void	*eat_sleep_think(void *args);
+void	*routine(void *args);
 
 #endif
