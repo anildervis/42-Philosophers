@@ -3,8 +3,7 @@
 void	init_args(int ac, char **av, t_args *args)
 {
 	int				i;
-	t_philo			**philosophers;
-	pthread_mutex_t	**forks;
+	pthread_mutex_t	*forks;
 
 	i = -1;
 	args->is_any_dead = 0;
@@ -15,32 +14,27 @@ void	init_args(int ac, char **av, t_args *args)
 	args->number_of_times_each_philosopher_must_eat = -1;
 	if (ac == 6)
 		args->number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
-	philosophers = (t_philo **)malloc(sizeof(t_philo *) * args->number_of_philosophers);
-	forks = (pthread_mutex_t **)malloc(sizeof(pthread_mutex_t *) * args->number_of_philosophers);	
+	args->philosophers = (t_philo **)malloc(sizeof(t_philo *) * args->number_of_philosophers);
+	forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * args->number_of_philosophers);	
 	while (++i < args->number_of_philosophers)
 	{
-		philosophers[i] = (t_philo *)malloc(sizeof(t_philo));
-		philosophers[i]->id = i;
-		philosophers[i]->fork_on_left = i;
-		philosophers[i]->fork_on_right = (i + 1) % args->number_of_philosophers;
-		philosophers[i]->philo_thread = (pthread_t *)malloc(sizeof(pthread_t));
-		philosophers[i]->args = args;
-		philosophers[i]->last_meal_time = get_miliseconds();
-		forks[i] = (pthread_mutex_t *)malloc(sizeof(args->number_of_philosophers));
+		args->philosophers[i] = (t_philo *)malloc(sizeof(t_philo));
+		args->philosophers[i]->id = i;
+		args->philosophers[i]->fork_on_left = i;
+		args->philosophers[i]->fork_on_right = (i + 1) % args->number_of_philosophers;
+		args->philosophers[i]->args = args;
+		args->philosophers[i]->last_meal_time = get_miliseconds();
+		pthread_mutex_init(&forks[i], NULL);
 	}
 	args->start_time = get_miliseconds();
-	args->philosophers = philosophers;
 	args->forks = forks;
 	pthread_mutex_init(&args->report, NULL); 
 	i = -1;
 	while (++i < args->number_of_philosophers)
-	{
-		pthread_create(philosophers[i]->philo_thread, NULL, routine, philosophers);
-		pthread_mutex_init(forks[i], NULL);
-	}
+		pthread_create(&args->philosophers[i]->philo_thread, NULL, routine, (void *)args->philosophers[i]);
 	i = -1;
 	while (++i < args->number_of_philosophers)
-		pthread_join(philosophers[i], NULL);
+		pthread_join(args->philosophers[i]->philo_thread, NULL);
 	while (--i >= 0)
 		pthread_mutex_destroy(&args->forks[i]);
 	pthread_mutex_destroy(&args->report);

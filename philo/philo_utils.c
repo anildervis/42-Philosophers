@@ -2,9 +2,11 @@
 
 int get_miliseconds(void)
 {
-	struct timeval *time;
-	gettimeofday(time, NULL);
-	return (time->tv_sec * 1000 + time->tv_usec / 1000);
+	struct timeval time;
+
+	gettimeofday(&time, NULL);
+
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
 int time_dif(int time1)
@@ -14,7 +16,18 @@ int time_dif(int time1)
 	time2 = get_miliseconds();
 	return (time2 - time1);
 }
+void	u_sleep(long long time)
+{
+	long long	i;
 
+	i = get_miliseconds();
+	while (1)
+	{
+		if ((get_miliseconds() - i) >= time)
+			break ;
+		usleep(50);
+	}
+}
 void	arg_control(int ac, char **av)
 {
 	int	i;

@@ -19,7 +19,7 @@ typedef struct s_philo
 	int				fork_on_left;
 	int				fork_on_right;
 	int				last_meal_time;
-	pthread_t		*philo_thread;
+	pthread_t		philo_thread;
 	struct s_args	*args;
 }	t_philo;
 
@@ -32,7 +32,7 @@ typedef struct s_args
 	int				number_of_times_each_philosopher_must_eat;
 	int				is_any_dead;
 	int				start_time;
-	t_philo			*philosophers;
+	t_philo			**philosophers;
 	pthread_mutex_t	report;
 	pthread_mutex_t	*forks;
 }	t_args;
@@ -43,11 +43,18 @@ int		time_dif(int time1);
 void	arg_control(int ac, char **av);
 int		ft_isnumber(char *str);
 int		ft_atoi(char *str);
+void	u_sleep(long long time);
 
 // -------------- initialize.c --------------
 void	init_args(int ac, char **av, t_args *args);
 
 // -------------- main.c --------------
 void	*routine(void *args);
+void	*check(void *x);
+void	eat(t_philo *philo);
+void	take_fork(t_philo *philo);
+void	leave_fork(t_philo *philo);
+void	print_type(int type);
+void	print_situation(int type, t_philo *philo);
 
 #endif
