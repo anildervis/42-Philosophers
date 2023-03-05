@@ -9,6 +9,9 @@ void *routine(void *x)
 		u_sleep(100);
 	while (1)
 	{
+		if (philo->args->number_of_times_each_philosopher_must_eat != 0
+		 && philo->meal_count >= philo->args->number_of_times_each_philosopher_must_eat)
+			break;
 		take_fork(philo);
 		eat(philo);
 		leave_fork(philo);
@@ -21,9 +24,10 @@ void *routine(void *x)
 void eat(t_philo *philo)
 {
 	philo->is_eating = 1;
+	philo->meal_count++;
+	philo->last_meal_time = get_miliseconds();
 	print_situation(PRINT_EAT, philo);
 	u_sleep(philo->args->time_to_eat);
-	philo->last_meal_time = get_miliseconds();
 	philo->is_eating = 0;
 }
 
@@ -54,20 +58,25 @@ int	main(int ac, char **av)
 void check_finish(t_args *args)
 {
 	int i;
+	int count;
 
 	while (1)
 	{
 		i = -1;
+		count = 0;
 		while (++i < args->number_of_philosophers)
 		{
-			if (args->philosophers[i]->)
+			if (args->number_of_times_each_philosopher_must_eat != 0 && args->philosophers[i]->meal_count >= args->number_of_times_each_philosopher_must_eat)
+				count++;
 			if (args->philosophers[i]->is_eating == 0 && time_dif(args->philosophers[i]->last_meal_time) > args->time_to_die)
 			{
 				print_situation(PRINT_DIE, args->philosophers[i]);
 				exit(0);
 			}
 		}
-		u_sleep(5);
+		if (count == args->number_of_philosophers)
+			exit(0);
+		usleep(1000);
 	}
 }
 

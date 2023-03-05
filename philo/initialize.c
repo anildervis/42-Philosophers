@@ -11,7 +11,7 @@ void	init_args(int ac, char **av, t_args *args)
 	args->time_to_die = ft_atoi(av[2]);
 	args->time_to_eat = ft_atoi(av[3]);
 	args->time_to_sleep = ft_atoi(av[4]);
-	args->number_of_times_each_philosopher_must_eat = -1;
+	args->number_of_times_each_philosopher_must_eat = 0;
 	if (ac == 6)
 		args->number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
 	args->philosophers = (t_philo **)malloc(sizeof(t_philo *) * args->number_of_philosophers);
@@ -20,6 +20,7 @@ void	init_args(int ac, char **av, t_args *args)
 	{
 		args->philosophers[i] = (t_philo *)malloc(sizeof(t_philo));
 		args->philosophers[i]->id = i;
+		args->philosophers[i]->meal_count = 0;
 		args->philosophers[i]->fork_on_left = i;
 		args->philosophers[i]->fork_on_right = (i + 1) % args->number_of_philosophers;
 		args->philosophers[i]->args = args;
