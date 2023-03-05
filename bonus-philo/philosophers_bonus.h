@@ -7,6 +7,8 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <semaphore.h>
+# include <fcntl.h>
+# include <signal.h>
 
 #define PRINT_FORK 1
 #define PRINT_EAT 2
@@ -17,25 +19,26 @@
 typedef struct s_philo
 {
     int				id;
+    int             pid;
 	int				last_meal_time;
 	int				is_eating;
-	pthread_t		philo_thread;
+	int				meal_count;
 	struct s_args	*args;
 }	t_philo;
 
 typedef struct s_args
 {
-	int				number_of_philosophers;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				number_of_times_each_philosopher_must_eat;
-	int				is_any_dead;
-	int				start_time;
-	t_philo			**philosophers;
-	pthread_mutex_t	report;
-	sem_t			forks;
-}	t_args;
+    int     number_of_philo;
+    int     time_to_die;
+    int     time_to_eat;
+    int     time_to_sleep;
+    int     starting_time;
+    int     max_eat;
+    t_philo **philo;
+    sem_t   *forks;
+    sem_t   *report;
+    sem_t   *destoy_all;
+}   t_args;
 
 // -------------- philo_utils.c --------------
 int		get_miliseconds(void);
@@ -45,16 +48,13 @@ int		ft_isnumber(char *str);
 int		ft_atoi(char *str);
 void	u_sleep(long long time);
 
-// -------------- initialize.c --------------
-void	init_args(int ac, char **av, t_args *args);
+// -------------- routine.c --------------  
+void eat_sleep_think(t_philo *philo);
+void eat(t_philo *philo);
+void *dead_check(void *x);
+void write_situation(int type, t_philo *philo);
 
 // -------------- main.c --------------
-void	*routine(void *args);
-void	*check(void *x);
-void	eat(t_philo *philo);
-void	take_fork(t_philo *philo);
-void	leave_fork(t_philo *philo);
-void	print_type(int type);
-void	print_situation(int type, t_philo *philo);
+void terminate_process(t_args *args);
 
 #endif
