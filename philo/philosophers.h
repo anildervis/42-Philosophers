@@ -19,7 +19,6 @@ typedef struct s_philo
 	int				fork_on_left;
 	int				fork_on_right;
 	int				last_meal_time;
-	int				is_eating;
 	int				meal_count;
 	pthread_t		philo_thread;
 	struct s_args	*args;

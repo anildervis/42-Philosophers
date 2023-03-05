@@ -24,7 +24,6 @@ void	init_args(int ac, char **av, t_args *args)
 		args->philosophers[i]->fork_on_left = i;
 		args->philosophers[i]->fork_on_right = (i + 1) % args->number_of_philosophers;
 		args->philosophers[i]->args = args;
-		args->philosophers[i]->is_eating = 0;
 		args->philosophers[i]->last_meal_time = get_miliseconds();
 		pthread_mutex_init(&forks[i], NULL);
 	}
