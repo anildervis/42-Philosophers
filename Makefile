@@ -6,7 +6,7 @@ RM = rm -f
 MANDATORY_DIR = philo/
 BONUS_DIR = bonus_philo/
 SRC = main philo_utils initialize
-BONUS_SRC = bonus_philo/main.c bonus_philo/philo_utils.c bonus_philo/initialize.c
+BONUS_SRC = bonus-philo/main.c bonus-philo/philo_utils.c bonus-philo/initialize.c
 SRC_FILES = $(addprefix $(MANDATORY_DIR), $(addsuffix .c, $(SRC)))
 
 # Colors
