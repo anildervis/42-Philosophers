@@ -3,28 +3,20 @@
 void *routine(void *x)
 {
 	t_philo *philo;
-	// t_args *args;
 
 	philo = (t_philo *)x;
-	// args = philo->args;
 	if (philo->id % 2)
 		u_sleep(100);
 	while (1)
 	{
-		check_dead(philo);
 		take_fork(philo);
 		eat(philo);
 		leave_fork(philo);
-		check_dead(philo);
 		print_situation(PRINT_THINK, philo);
 	}
 	return ((void *)0);
 }
 
-void check_dead(t_philo *philo)
-{
-	if (philo-)
-}
 
 void eat(t_philo *philo)
 {
@@ -57,6 +49,26 @@ int	main(int ac, char **av)
 	args = (t_args *)malloc(sizeof(t_args));
 	arg_control(ac, av);
 	init_args(ac, av, args);
+}
+
+void check_finish(t_args *args)
+{
+	int i;
+
+	while (1)
+	{
+		i = -1;
+		while (++i < args->number_of_philosophers)
+		{
+			if (args->philosophers[i]->)
+			if (args->philosophers[i]->is_eating == 0 && time_dif(args->philosophers[i]->last_meal_time) > args->time_to_die)
+			{
+				print_situation(PRINT_DIE, args->philosophers[i]);
+				exit(0);
+			}
+		}
+		u_sleep(5);
+	}
 }
 
 void print_type(int type)

@@ -33,6 +33,7 @@ void	init_args(int ac, char **av, t_args *args)
 	i = -1;
 	while (++i < args->number_of_philosophers)
 		pthread_create(&args->philosophers[i]->philo_thread, NULL, routine, (void *)args->philosophers[i]);
+	check_finish(args);
 	i = -1;
 	while (++i < args->number_of_philosophers)
 		pthread_join(args->philosophers[i]->philo_thread, NULL);

@@ -51,7 +51,7 @@ void	init_args(int ac, char **av, t_args *args);
 
 // -------------- main.c --------------
 void	*routine(void *args);
-void	*check(void *x);
+void	check_finish(t_args *args);
 void	eat(t_philo *philo);
 void	take_fork(t_philo *philo);
 void	leave_fork(t_philo *philo);
