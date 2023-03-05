@@ -1,11 +1,12 @@
-#ifndef PHILOSOPHERS_H
-# define PHILOSOPHERS_H
+#ifndef PHILOSOPHERS_BONUS_H
+# define PHILOSOPHERS_BONUS_H
 
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <semaphore.h>
 
 #define PRINT_FORK 1
 #define PRINT_EAT 2
@@ -16,8 +17,6 @@
 typedef struct s_philo
 {
     int				id;
-	int				fork_on_left;
-	int				fork_on_right;
 	int				last_meal_time;
 	int				is_eating;
 	pthread_t		philo_thread;
@@ -35,7 +34,7 @@ typedef struct s_args
 	int				start_time;
 	t_philo			**philosophers;
 	pthread_mutex_t	report;
-	pthread_mutex_t	*forks;
+	sem_t			forks;
 }	t_args;
 
 // -------------- philo_utils.c --------------

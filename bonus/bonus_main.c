@@ -1,4 +1,4 @@
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 void *routine(void *x)
 {
@@ -11,19 +11,12 @@ void *routine(void *x)
 		u_sleep(100);
 	while (1)
 	{
-		check_dead(philo);
 		take_fork(philo);
 		eat(philo);
 		leave_fork(philo);
-		check_dead(philo);
 		print_situation(PRINT_THINK, philo);
 	}
 	return ((void *)0);
-}
-
-void check_dead(t_philo *philo)
-{
-	if (philo-)
 }
 
 void eat(t_philo *philo)
@@ -37,16 +30,16 @@ void eat(t_philo *philo)
 
 void take_fork(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->args->forks[philo->id]);
+	sem_wait(&philo->args->forks);
 	print_situation(PRINT_FORK, philo);
-	pthread_mutex_lock(&philo->args->forks[(philo->id + 1) % philo->args->number_of_philosophers]);
+	sem_wait(&philo->args->forks);
 	print_situation(PRINT_FORK, philo);
 }
 
 void leave_fork(t_philo *philo)
 {
-	pthread_mutex_unlock(&philo->args->forks[philo->id]);
-	pthread_mutex_unlock(&philo->args->forks[(philo->id + 1) % philo->args->number_of_philosophers]);
+	sem_post(&philo->args->forks);
+	sem_post(&philo->args->forks);
 	print_situation(PRINT_SLEEP, philo);
 	u_sleep(philo->args->time_to_sleep);	
 }
