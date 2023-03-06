@@ -40,8 +40,37 @@ int main(int argc, char **argv)
             exit(0);
         }
     }
+    pthread_t check;
+    pthread_create(&check, NULL, dead_check, (void *)args);
+    pthread_detach(check);
     sem_wait(args->destoy_all);
     terminate_process(args);
+}
+
+void *dead_check(void *x)
+{
+    t_args *args;
+
+    args = (t_args *)x;
+    while(1)
+    {
+        int i = -1;
+        int count = 0;
+        while (++i < args->number_of_philo)
+        {
+            if (get_miliseconds() - args->philo[i]->last_meal_time > args->time_to_die)
+            {
+                write_situation(PRINT_DIE, args->philo[i]);
+                sem_post(args->destoy_all);
+            }
+            if (args->max_eat != 0 && args->philo[i]->meal_count >= args->max_eat)
+                count++;
+        }
+        if (count == args->number_of_philo)
+            sem_post(args->destoy_all);
+        usleep(100);
+    }
+    return NULL;
 }
 
 void terminate_process(t_args *args)
