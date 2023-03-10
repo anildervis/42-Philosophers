@@ -35,6 +35,7 @@ typedef struct s_args
     int     starting_time;
     int     max_eat;
     t_philo **philo;
+    sem_t   *meal_check;
     sem_t   *forks;
     sem_t   *report;
     sem_t   *destoy_all;
@@ -56,5 +57,6 @@ void write_situation(int type, t_philo *philo);
 
 // -------------- main.c --------------
 void terminate_process(t_args *args);
+void *meal_control(void *x);
 
 #endif
