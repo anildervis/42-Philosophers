@@ -1,8 +1,8 @@
 #include "philosophers.h"
 
-void *routine(void *x)
+void	*routine(void *x)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)x;
 	if (philo->id % 2)
@@ -10,7 +10,7 @@ void *routine(void *x)
 	while (1)
 	{
 		if (philo->args->number_of_times_each_philosopher_must_eat != 0
-		 && philo->meal_count >= philo->args->number_of_times_each_philosopher_must_eat)
+			&& philo->meal_count >= philo->args->number_of_times_each_philosopher_must_eat)
 			break;
 		eat(philo);
 		print_situation(PRINT_THINK, philo);
@@ -18,7 +18,7 @@ void *routine(void *x)
 	return (NULL);
 }
 
-void eat(t_philo *philo)
+void	eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->args->forks[philo->id]);
 	print_situation(PRINT_FORK, philo);
@@ -34,10 +34,10 @@ void eat(t_philo *philo)
 	u_sleep(philo->args->time_to_sleep);
 }
 
-void check_finish(t_args *args)
+void	check_finish(t_args *args)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	while (1)
 	{
@@ -59,7 +59,7 @@ void check_finish(t_args *args)
 	}
 }
 
-void print_situation(int type, t_philo *philo)
+void	print_situation(int type, t_philo *philo)
 {
 	pthread_mutex_lock(&philo->args->report);
 	printf("%d %d ", time_dif(philo->args->start_time), philo->id + 1);

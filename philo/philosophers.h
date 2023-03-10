@@ -47,8 +47,8 @@ int		ft_atoi(char *str);
 
 // -------------- initialize.c --------------
 void	init_args(int ac, char **av, t_args *args);
-void mutex_thread_create(t_args *args);
-void mutex_thread_finish(t_args *args);
+void	mutex_thread_create(t_args *args);
+void	mutex_thread_finish(t_args *args);
 
 // -------------- routine.c --------------
 void	*routine(void *args);

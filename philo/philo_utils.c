@@ -1,20 +1,16 @@
 #include "philosophers.h"
 
-int get_miliseconds(void)
+int	get_miliseconds(void)
 {
-	struct timeval time;
+	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-int time_dif(int time1)
+int	time_dif(int time1)
 {
-	int time2;
-
-	time2 = get_miliseconds();
-	return (time2 - time1);
+	return (get_miliseconds() - time1);
 }
 
 void	u_sleep(long long time)
@@ -24,7 +20,7 @@ void	u_sleep(long long time)
 	i = get_miliseconds();
 	while (1)
 	{
-		if ((get_miliseconds() - i) >= time)
+		if (time_dif(i) >= time)
 			break ;
 		usleep(500);
 	}
@@ -33,7 +29,7 @@ void	u_sleep(long long time)
 void	arg_control(int ac, char **av)
 {
 	int	i;
-	int k;
+	int	k;
 
 	i = 0;
 	k = 0;

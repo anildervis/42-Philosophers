@@ -28,9 +28,9 @@ void	init_args(int ac, char **av, t_args *args)
 	args->start_time = get_miliseconds();
 }
 
-void mutex_thread_create(t_args *args)
+void	mutex_thread_create(t_args *args)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	pthread_mutex_init(&args->report, NULL);
@@ -38,12 +38,11 @@ void mutex_thread_create(t_args *args)
 		pthread_mutex_init(&args->forks[i], NULL);
 	while (++i < args->number_of_philosophers)
 		pthread_create(&args->philosophers[i]->philo_thread, NULL, routine, (void *)args->philosophers[i]);
-
 }
 
-void mutex_thread_finish(t_args *args)
+void	mutex_thread_finish(t_args *args)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < args->number_of_philosophers)
