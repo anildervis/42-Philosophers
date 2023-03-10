@@ -39,13 +39,23 @@ typedef struct s_args
     sem_t   *forks;
     sem_t   *report;
     sem_t   *destoy_all;
+    sem_t   *dead_check;
 }   t_args;
+
+// -------------- controls.c --------------
+void	arg_control(int ac, char **av);
+void start_sem(t_args *args);
+void end_sem(t_args *args);
+void *meal_control(void *x);
+void terminate_process(t_args *args);
+
+// -------------- initialize.c --------------
+void init_args(int argc, char **argv, t_args *args);
+void forking(t_args *args);
 
 // -------------- philo_utils.c --------------
 int		get_miliseconds(void);
 int		time_dif(int time1);
-void	arg_control(int ac, char **av);
-int		ft_isnumber(char *str);
 int		ft_atoi(char *str);
 void	u_sleep(long long time);
 
@@ -55,8 +65,5 @@ void eat(t_philo *philo);
 void *dead_check(void *x);
 void write_situation(int type, t_philo *philo);
 
-// -------------- main.c --------------
-void terminate_process(t_args *args);
-void *meal_control(void *x);
 
 #endif

@@ -1,11 +1,11 @@
-NAME = philosophers
+NAME = philo_bonus
 CC = gcc
 FLAGS = -Wall -Werror -Wextra
 RM = rm -f
-MANDATORY_DIR = philo/
-SRC = main philo_utils initialize
-SRC_FILES = $(addprefix $(MANDATORY_DIR), $(addsuffix .c, $(SRC)))
-
+SRC = main philo_utils routine
+SRC_FILES = $(addsuffix .c, $(SRC))
+HDR = philosophers_bonus
+HDR_FILES = $(addsuffix .h, $(HDR))
 # Colors
 
 DEF_COLOR = \033[0;39m
@@ -18,13 +18,17 @@ MAGENTA = \033[0;95m
 CYAN = \033[0;96m
 WHITE = \033[0;97m
 
-all:
+all: $(NAME) $(HDR_FILES)
+
+$(NAME):
 	$(CC) -pthread $(FLAGS) $(SRC_FILES) -o $(NAME)
 	@echo "$(GREEN)All compiled.$(DEF_COLOR)"
+
+clean:
 
 fclean:
 	$(RM) $(NAME)
 
 re:	fclean all
 
-.PHONY = all fclean re bonus
+.PHONY = all clean fclean re 

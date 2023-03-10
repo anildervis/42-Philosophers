@@ -1,4 +1,4 @@
-#include "philosophers_bonus.h"
+ #include "philosophers_bonus.h"
 
 void eat_sleep_think(t_philo *philo)
 {
@@ -20,18 +20,19 @@ void *dead_check(void *x)
     philo = (t_philo *)x;
     while(1)
     {
-        int count = 0;
-        if ((get_miliseconds() - philo->last_meal_time) > philo->args->time_to_die)
+        if (time_dif(philo->last_meal_time) > philo->args->time_to_die)
         {
+            sem_wait(philo->args->dead_check);
             write_situation(PRINT_DIE, philo);
             sem_post(philo->args->destoy_all);
+            break;
         }
         else if (philo->args->max_eat != 0 && philo->meal_count >= philo->args->max_eat)
         {
             sem_post(philo->args->meal_check);
-            usleep(10000000);
+            break;
         }
-        usleep(100);
+        usleep(500);
     }
     return NULL;
 }

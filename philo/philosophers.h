@@ -41,21 +41,19 @@ typedef struct s_args
 // -------------- philo_utils.c --------------
 int		get_miliseconds(void);
 int		time_dif(int time1);
-void	arg_control(int ac, char **av);
-int		ft_isnumber(char *str);
-int		ft_atoi(char *str);
 void	u_sleep(long long time);
+void	arg_control(int ac, char **av);
+int		ft_atoi(char *str);
 
 // -------------- initialize.c --------------
 void	init_args(int ac, char **av, t_args *args);
+void mutex_thread_create(t_args *args);
+void mutex_thread_finish(t_args *args);
 
-// -------------- main.c --------------
+// -------------- routine.c --------------
 void	*routine(void *args);
 void	check_finish(t_args *args);
 void	eat(t_philo *philo);
-void	take_fork(t_philo *philo);
-void	leave_fork(t_philo *philo);
-void	print_type(int type);
 void	print_situation(int type, t_philo *philo);
 
 #endif

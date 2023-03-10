@@ -16,6 +16,7 @@ int time_dif(int time1)
 	time2 = get_miliseconds();
 	return (time2 - time1);
 }
+
 void	u_sleep(long long time)
 {
 	long long	i;
@@ -25,14 +26,17 @@ void	u_sleep(long long time)
 	{
 		if ((get_miliseconds() - i) >= time)
 			break ;
-		usleep(50);
+		usleep(500);
 	}
 }
+
 void	arg_control(int ac, char **av)
 {
 	int	i;
+	int k;
 
 	i = 0;
+	k = 0;
 	if (!(ac == 6 || ac == 5))
 	{
 		printf("Error on arguments\n");
@@ -40,23 +44,14 @@ void	arg_control(int ac, char **av)
 	}
 	while (++i < ac)
 	{
-		if (!ft_isnumber(av[i]))
-		{
-			printf("Error on arguments\n");
-			exit(1);
-		}
+		k = -1;
+		while (*(av[i] + ++k))
+			if (*(av[i] + k) > '9' || *(av[i] + k) < '0')
+			{
+				printf("Error on arguments\n");
+				exit(1);
+			}
 	}
-}
-
-int	ft_isnumber(char *str)
-{
-	int	i;
-
-	i = -1;
-	while (*(str + ++i))
-		if (*(str + i) > '9' || *(str + i) < '0')
-			return (0);
-	return (1);
 }
 
 int	ft_atoi(char *str)
