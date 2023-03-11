@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aderviso <aderviso@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/11 19:18:43 by aderviso          #+#    #+#             */
+/*   Updated: 2023/03/11 19:18:43 by aderviso         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers_bonus.h"
 
 int	get_miliseconds(void)
@@ -35,5 +47,5 @@ int	ft_atoi(char *str)
 	nbr = 0;
 	while (*(str + ++i))
 		nbr = nbr * 10 + (*(str + i) - '0');
-	return (nbr);	
+	return (nbr);
 }
