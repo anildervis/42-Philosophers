@@ -2,10 +2,10 @@ NAME = philo
 CC = gcc
 FLAGS = -Wall -Werror -Wextra
 RM = rm -f
-SRC = main philo_utils initialize
-SRC_FILES = $(addsuffix .c, $(SRC))
-HDR = philosophers
-HDR_FILES = $(addsuffix .h, $(HDR))
+INCLUDE = -pthread
+SRCS = main.c philo_utils.c initialize.c routine.c
+OBJS = $(SRCS:.c=.o)
+HEADER = philosophers.h
 
 # Colors
 
@@ -19,15 +19,16 @@ MAGENTA = \033[0;95m
 CYAN = \033[0;96m
 WHITE = \033[0;97m
 
-all: $(NAME)
+all: $(NAME) $(HEADER)
 
-$(NAME):
-	$(CC) -pthread $(FLAGS) $(SRC_FILES) -o $(NAME)
+$(NAME): $(OBJS)
+	$(CC) $(INCLUDE) $(FLAGS) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)All compiled.$(DEF_COLOR)"
 
 clean:
+	$(RM) $(OBJS)
 
-fclean:
+fclean: clean
 	$(RM) $(NAME)
 
 re:	fclean all

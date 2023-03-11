@@ -2,10 +2,10 @@ NAME = philo_bonus
 CC = gcc
 FLAGS = -Wall -Werror -Wextra
 RM = rm -f
-SRC = main philo_utils routine
-SRC_FILES = $(addsuffix .c, $(SRC))
-HDR = philosophers_bonus
-HDR_FILES = $(addsuffix .h, $(HDR))
+INCLUDE = -pthread
+SRCS = main.c philo_utils.c controls.c routine.c initialize.c
+OBJS = $(SRCS:.c=.o)
+HEADER = philosophers_bonus.h
 # Colors
 
 DEF_COLOR = \033[0;39m
@@ -18,15 +18,16 @@ MAGENTA = \033[0;95m
 CYAN = \033[0;96m
 WHITE = \033[0;97m
 
-all: $(NAME) $(HDR_FILES)
+all: $(NAME) $(HEADER)
 
-$(NAME):
-	$(CC) -pthread $(FLAGS) $(SRC_FILES) -o $(NAME)
-	@echo "$(GREEN)All compiled.$(DEF_COLOR)"
+$(NAME): $(OBJS)
+	$(CC) $(INCLUDE) $(FLAGS) $(OBJS) -o $(NAME)
+	@echo "$(YELLOW)Bonus compiled.$(DEF_COLOR)"
 
 clean:
+	$(RM) $(OBJS)
 
-fclean:
+fclean: clean
 	$(RM) $(NAME)
 
 re:	fclean all
