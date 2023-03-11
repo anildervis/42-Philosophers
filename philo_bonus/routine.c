@@ -28,8 +28,10 @@ void	eat_sleep_think(t_philo *philo)
 void	*dead_check(void *x)
 {
 	t_philo	*philo;
+	int		eat_flag;
 
 	philo = (t_philo *) x;
+	eat_flag = 0;
 	while (1)
 	{
 		if (time_dif(philo->last_meal_time) > philo->args->time_to_die)
@@ -40,10 +42,11 @@ void	*dead_check(void *x)
 			break ;
 		}
 		else if (philo->args->max_eat != 0
-			&& philo->meal_count >= philo->args->max_eat)
+			&& philo->meal_count >= philo->args->max_eat
+			&& !eat_flag)
 		{
 			sem_post(philo->args->meal_check);
-			break ;
+			eat_flag = 1;
 		}
 		usleep(500);
 	}

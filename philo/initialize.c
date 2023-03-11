@@ -51,8 +51,11 @@ void	mutex_thread_create(t_args *args)
 		pthread_mutex_init(&args->forks[i], NULL);
 	i = -1;
 	while (++i < args->num_phil)
+	{
 		pthread_create(&args->philo[i]->philo_thread,
 			NULL, routine, (void *)args->philo[i]);
+		pthread_detach(args->philo[i]->philo_thread);
+	}
 }
 
 void	mutex_thread_finish(t_args *args)
@@ -60,9 +63,8 @@ void	mutex_thread_finish(t_args *args)
 	int	i;
 
 	i = -1;
-	while (++i < args->num_phil)
-		pthread_join(args->philo[i]->philo_thread, NULL);
-	while (--i >= 0)
-		pthread_mutex_destroy(&args->forks[i]);
 	pthread_mutex_destroy(&args->report);
+	while (++i < args->num_phil)
+		pthread_mutex_destroy(&args->forks[i]);
+	exit(0);
 }

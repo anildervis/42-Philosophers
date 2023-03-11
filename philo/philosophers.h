@@ -45,6 +45,7 @@ typedef struct s_args
 	int				max_eat;
 	int				is_any_dead;
 	int				start_time;
+	int				total_meal_count;
 	t_philo			**philo;
 	pthread_mutex_t	report;
 	pthread_mutex_t	*forks;

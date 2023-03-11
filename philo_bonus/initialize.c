@@ -6,7 +6,7 @@
 /*   By: aderviso <aderviso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:18:39 by aderviso          #+#    #+#             */
-/*   Updated: 2023/03/11 19:36:12 by aderviso         ###   ########.fr       */
+/*   Updated: 2023/03/11 20:04:45 by aderviso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	init_args(int argc, char **argv, t_args *args)
 		args->max_eat = ft_atoi(argv[5]);
 	args->philo = (t_philo **)malloc(sizeof(t_philo) * args->num_phil);
 	start_sem(args);
-	args->starting_time = get_miliseconds();
 	while (++i < args->num_phil)
 	{
 		args->philo[i] = (t_philo *)malloc(sizeof(t_philo));
@@ -36,6 +35,7 @@ void	init_args(int argc, char **argv, t_args *args)
 		args->philo[i]->meal_count = 0;
 		args->philo[i]->args = args;
 	}
+	args->starting_time = get_miliseconds();
 }
 
 void	forking(t_args *args)

@@ -6,7 +6,7 @@
 /*   By: aderviso <aderviso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:18:37 by aderviso          #+#    #+#             */
-/*   Updated: 2023/03/11 19:41:29 by aderviso         ###   ########.fr       */
+/*   Updated: 2023/03/11 20:27:35 by aderviso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	arg_control(int ac, char **av)
 
 	i = 0;
 	k = 0;
-	if (!(ac == 6 || ac == 5))
+	if (!(ac == 6 || ac == 5) || (av[5] && ft_atoi(av[5]) == 0))
 	{
 		printf("Error on arguments\n");
 		exit(1);

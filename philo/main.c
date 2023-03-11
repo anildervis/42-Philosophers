@@ -21,6 +21,5 @@ int	main(int ac, char **av)
 	init_args(ac, av, args);
 	mutex_thread_create(args);
 	check_finish(args);
-	mutex_thread_finish(args);
 	return (0);
 }

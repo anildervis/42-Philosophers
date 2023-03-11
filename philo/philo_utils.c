@@ -45,7 +45,7 @@ void	arg_control(int ac, char **av)
 
 	i = 0;
 	k = 0;
-	if (!(ac == 6 || ac == 5))
+	if (!(ac == 6 || ac == 5) || (av[5] && ft_atoi(av[5]) == 0))
 	{
 		printf("Error on arguments\n");
 		exit(1);
