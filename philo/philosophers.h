@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aderviso <aderviso@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/11 19:18:31 by aderviso          #+#    #+#             */
+/*   Updated: 2023/03/11 19:18:31 by aderviso         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
@@ -7,15 +19,15 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-#define PRINT_FORK 1
-#define PRINT_EAT 2
-#define PRINT_SLEEP 3
-#define PRINT_THINK 4
-#define PRINT_DIE 5
+# define PRINT_FORK 1
+# define PRINT_EAT 2
+# define PRINT_SLEEP 3
+# define PRINT_THINK 4
+# define PRINT_DIE 5
 
 typedef struct s_philo
 {
-    int				id;
+	int				id;
 	int				fork_on_left;
 	int				fork_on_right;
 	int				last_meal_time;
@@ -26,14 +38,14 @@ typedef struct s_philo
 
 typedef struct s_args
 {
-	int				number_of_philosophers;
+	int				num_phil;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				number_of_times_each_philosopher_must_eat;
+	int				max_eat;
 	int				is_any_dead;
 	int				start_time;
-	t_philo			**philosophers;
+	t_philo			**philo;
 	pthread_mutex_t	report;
 	pthread_mutex_t	*forks;
 }	t_args;

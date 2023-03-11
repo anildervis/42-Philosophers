@@ -22,7 +22,7 @@ WHITE = \033[0;97m
 all: $(NAME)
 
 $(NAME):
-	$(CC) -pthread $(FLAGS) $(SRC_FILES) $(HDR) -o $(NAME)
+	$(CC) -pthread $(FLAGS) $(SRC_FILES) -o $(NAME)
 	@echo "$(GREEN)All compiled.$(DEF_COLOR)"
 
 clean:

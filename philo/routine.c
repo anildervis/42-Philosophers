@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aderviso <aderviso@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/11 19:18:33 by aderviso          #+#    #+#             */
+/*   Updated: 2023/03/11 19:28:50 by aderviso         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 void	*routine(void *x)
@@ -9,9 +21,9 @@ void	*routine(void *x)
 		u_sleep(500);
 	while (1)
 	{
-		if (philo->args->number_of_times_each_philosopher_must_eat != 0
-			&& philo->meal_count >= philo->args->number_of_times_each_philosopher_must_eat)
-			break;
+		if (philo->args->max_eat != 0
+			&& philo->meal_count >= philo->args->max_eat)
+			break ;
 		eat(philo);
 		print_situation(PRINT_THINK, philo);
 	}
@@ -20,18 +32,21 @@ void	*routine(void *x)
 
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->args->forks[philo->id]);
+	t_args	*args;
+
+	args = philo->args;
+	pthread_mutex_lock(&args->forks[philo->id]);
 	print_situation(PRINT_FORK, philo);
-	pthread_mutex_lock(&philo->args->forks[(philo->id + 1) % philo->args->number_of_philosophers]);
+	pthread_mutex_lock(&args->forks[(philo->id + 1) % args->num_phil]);
 	print_situation(PRINT_FORK, philo);
 	philo->meal_count++;
 	philo->last_meal_time = get_miliseconds();
 	print_situation(PRINT_EAT, philo);
-	u_sleep(philo->args->time_to_eat);
-	pthread_mutex_unlock(&philo->args->forks[philo->id]);
-	pthread_mutex_unlock(&philo->args->forks[(philo->id + 1) % philo->args->number_of_philosophers]);
+	u_sleep(args->time_to_eat);
+	pthread_mutex_unlock(&args->forks[philo->id]);
+	pthread_mutex_unlock(&args->forks[(philo->id + 1) % args->num_phil]);
 	print_situation(PRINT_SLEEP, philo);
-	u_sleep(philo->args->time_to_sleep);
+	u_sleep(args->time_to_sleep);
 }
 
 void	check_finish(t_args *args)
@@ -43,17 +58,18 @@ void	check_finish(t_args *args)
 	{
 		i = -1;
 		count = 0;
-		while (++i < args->number_of_philosophers)
+		while (++i < args->num_phil)
 		{
-			if (args->number_of_times_each_philosopher_must_eat != 0 && args->philosophers[i]->meal_count >= args->number_of_times_each_philosopher_must_eat)
+			if (args->max_eat != 0
+				&& args->philo[i]->meal_count >= args->max_eat)
 				count++;
-			if (time_dif(args->philosophers[i]->last_meal_time) > args->time_to_die)
+			if (time_dif(args->philo[i]->last_meal_time) > args->time_to_die)
 			{
-				print_situation(PRINT_DIE, args->philosophers[i]);
+				print_situation(PRINT_DIE, args->philo[i]);
 				exit(0);
 			}
 		}
-		if (count == args->number_of_philosophers)
+		if (count == args->num_phil)
 			exit(0);
 		usleep(500);
 	}
