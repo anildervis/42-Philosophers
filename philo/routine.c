@@ -6,7 +6,7 @@
 /*   By: aderviso <aderviso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:18:33 by aderviso          #+#    #+#             */
-/*   Updated: 2023/03/11 21:02:38 by aderviso         ###   ########.fr       */
+/*   Updated: 2023/03/17 19:12:10 by aderviso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,20 @@ void	*routine(void *x)
 {
 	t_philo	*philo;
 	t_args	*args;
-	int		total_philo;
-	int		eat_flag;
 
 	philo = (t_philo *)x;
 	args = philo->args;
-	eat_flag = 0;
-	total_philo = args->num_phil;
 	if (philo->id % 2)
 		u_sleep(100);
-	while (total_philo != args->total_meal_count)
+	while (args->total_meal_count != args->num_phil
+		&& philo->meal_count != args->max_eat
+		&& args->is_any_dead == 0)
 	{
-		if (philo->args->max_eat != 0
-			&& !eat_flag
-			&& philo->meal_count >= philo->args->max_eat)
-		{
-			eat_flag = 1;
-			philo->args->total_meal_count++;
-		}
 		eat(philo);
+		if (args->is_any_dead)
+			break ;
+		if (philo->meal_count == args->max_eat)
+			break ;
 		print_situation(PRINT_THINK, philo);
 	}
 	return (NULL);
@@ -49,9 +44,14 @@ void	eat(t_philo *philo)
 	print_situation(PRINT_FORK, philo);
 	pthread_mutex_lock(&args->forks[(philo->id + 1) % args->num_phil]);
 	print_situation(PRINT_FORK, philo);
-	philo->meal_count++;
-	philo->last_meal_time = get_miliseconds();
+	pthread_mutex_lock(&args->dead_check);
 	print_situation(PRINT_EAT, philo);
+	philo->meal_count++;
+	if (args->max_eat != 0
+		&& philo->meal_count == args->max_eat)
+		args->total_meal_count++;
+	philo->last_meal_time = get_miliseconds();
+	pthread_mutex_unlock(&args->dead_check);
 	u_sleep(args->time_to_eat);
 	pthread_mutex_unlock(&args->forks[philo->id]);
 	pthread_mutex_unlock(&args->forks[(philo->id + 1) % args->num_phil]);
@@ -70,10 +70,10 @@ void	check_finish(t_args *args)
 		count = 0;
 		while (++i < args->num_phil)
 		{
-			if (args->max_eat != 0
-				&& args->total_meal_count == args->num_phil)
+			if (args->max_eat != 0 && args->total_meal_count == args->num_phil)
 			{
-				pthread_mutex_lock(&args->report);
+				args->is_any_dead = 1;
+				pthread_mutex_lock(&args->dead_check);
 				mutex_thread_finish(args);
 			}
 			if (time_dif(args->philo[i]->last_meal_time) > args->time_to_die)
@@ -83,7 +83,9 @@ void	check_finish(t_args *args)
 				mutex_thread_finish(args);
 			}
 		}
-		usleep(500);
+		if (args->is_any_dead)
+			break ;
+		usleep(100);
 	}
 }
 

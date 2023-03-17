@@ -46,7 +46,9 @@ void	mutex_thread_create(t_args *args)
 	int	i;
 
 	i = -1;
+	args->total_meal_count = 0;
 	pthread_mutex_init(&args->report, NULL);
+	pthread_mutex_init(&args->dead_check, NULL);
 	while (++i < args->num_phil)
 		pthread_mutex_init(&args->forks[i], NULL);
 	i = -1;
@@ -63,8 +65,11 @@ void	mutex_thread_finish(t_args *args)
 	int	i;
 
 	i = -1;
-	pthread_mutex_destroy(&args->report);
 	while (++i < args->num_phil)
 		pthread_mutex_destroy(&args->forks[i]);
+	pthread_mutex_unlock(&args->dead_check);
+	pthread_mutex_destroy(&args->dead_check);
+	pthread_mutex_unlock(&args->report);
+	pthread_mutex_destroy(&args->report);
 	exit(0);
 }

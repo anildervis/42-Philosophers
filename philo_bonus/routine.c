@@ -48,7 +48,7 @@ void	*dead_check(void *x)
 			sem_post(philo->args->meal_check);
 			eat_flag = 1;
 		}
-		usleep(500);
+		usleep(50);
 	}
 	return (NULL);
 }
@@ -59,9 +59,11 @@ void	eat(t_philo *philo)
 	write_situation(PRINT_FORK, philo);
 	sem_wait(philo->args->forks);
 	write_situation(PRINT_FORK, philo);
+	sem_wait(philo->args->dead_check);
 	write_situation(PRINT_EAT, philo);
 	philo->last_meal_time = get_miliseconds();
 	philo->meal_count++;
+	sem_post(philo->args->dead_check);
 	u_sleep(philo->args->time_to_eat);
 	sem_post(philo->args->forks);
 	sem_post(philo->args->forks);

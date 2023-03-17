@@ -49,6 +49,7 @@ typedef struct s_args
 	t_philo			**philo;
 	pthread_mutex_t	report;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	dead_check;
 }	t_args;
 
 // -------------- philo_utils.c --------------
