@@ -70,5 +70,11 @@ void	mutex_thread_finish(t_args *args)
 	pthread_mutex_unlock(&args->dead_check);
 	pthread_mutex_destroy(&args->dead_check);
 	pthread_mutex_destroy(&args->report);
+	free(args->forks);
+	i = -1;
+	while (++i < args->num_phil)
+		free(args->philo[i]);
+	free(args->philo);
+	free(args);
 	exit(0);
 }

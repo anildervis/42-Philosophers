@@ -6,7 +6,7 @@
 /*   By: aderviso <aderviso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:18:37 by aderviso          #+#    #+#             */
-/*   Updated: 2023/03/17 16:46:17 by aderviso         ###   ########.fr       */
+/*   Updated: 2023/03/18 18:09:02 by aderviso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	end_sem(t_args *args)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	sem_close(args->forks);
 	sem_close(args->destoy_all);
 	sem_close(args->report);
@@ -70,6 +70,7 @@ void	end_sem(t_args *args)
 	sem_unlink("destroy_all");
 	sem_unlink("meal_check");
 	sem_unlink("dead_check");
+	free(args);
 }
 
 void	*meal_control(void *x)
@@ -92,5 +93,9 @@ void	terminate_process(t_args *args)
 	i = -1;
 	while (++i < args->num_phil)
 		kill(args->philo[i]->pid, SIGKILL);
+	i = -1;
+	while (++i < args->num_phil)
+		free(args->philo[i]);
+	free(args->philo);
 	end_sem(args);
 }
