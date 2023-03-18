@@ -48,7 +48,7 @@ void	*dead_check(void *x)
 			sem_post(philo->args->meal_check);
 			eat_flag = 1;
 		}
-		usleep(100);
+		usleep(500);
 	}
 	return (NULL);
 }
