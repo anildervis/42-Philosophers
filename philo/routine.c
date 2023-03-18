@@ -6,7 +6,7 @@
 /*   By: aderviso <aderviso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:18:33 by aderviso          #+#    #+#             */
-/*   Updated: 2023/03/17 19:12:10 by aderviso         ###   ########.fr       */
+/*   Updated: 2023/03/18 14:58:01 by aderviso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,12 @@ void	*routine(void *x)
 	if (philo->id % 2)
 		u_sleep(100);
 	while (args->total_meal_count != args->num_phil
-		&& philo->meal_count != args->max_eat
 		&& args->is_any_dead == 0)
 	{
 		eat(philo);
 		if (args->is_any_dead)
 			break ;
-		if (philo->meal_count == args->max_eat)
+		if (args->total_meal_count == args->num_phil)
 			break ;
 		print_situation(PRINT_THINK, philo);
 	}
@@ -64,7 +63,7 @@ void	check_finish(t_args *args)
 	int	i;
 	int	count;
 
-	while (1)
+	while (!(args->is_any_dead))
 	{
 		i = -1;
 		count = 0;
@@ -78,30 +77,36 @@ void	check_finish(t_args *args)
 			}
 			if (time_dif(args->philo[i]->last_meal_time) > args->time_to_die)
 			{
+				args->is_any_dead = 1;
+				pthread_mutex_lock(&args->dead_check);
 				print_situation(PRINT_DIE, args->philo[i]);
-				pthread_mutex_lock(&args->report);
 				mutex_thread_finish(args);
 			}
 		}
-		if (args->is_any_dead)
-			break ;
 		usleep(100);
 	}
 }
 
 void	print_situation(int type, t_philo *philo)
 {
+	t_args	*args;
+
+	args = philo->args;
 	pthread_mutex_lock(&philo->args->report);
-	printf("%d %d ", time_dif(philo->args->start_time), philo->id + 1);
-	if (type == PRINT_FORK)
-		printf("has taken a fork\n");
-	else if (type == PRINT_EAT)
-		printf("is eating\n");
-	else if (type == PRINT_SLEEP)
-		printf("is sleeping\n");
-	else if (type == PRINT_THINK)
-		printf("is thinking\n");
-	else
-		printf("died\n");
-	pthread_mutex_unlock(&philo->args->report);
+	if ((!(args->is_any_dead) || type == PRINT_DIE)
+		&& args->total_meal_count != args->num_phil)
+	{
+		printf("%d %d ", time_dif(args->start_time), philo->id + 1);
+		if (type == PRINT_FORK)
+			printf("has taken a fork\n");
+		else if (type == PRINT_EAT)
+			printf("is eating\n");
+		else if (type == PRINT_SLEEP)
+			printf("is sleeping\n");
+		else if (type == PRINT_THINK)
+			printf("is thinking\n");
+		else if (type == PRINT_DIE)
+			printf("died\n");
+	}
+	pthread_mutex_unlock(&args->report);
 }

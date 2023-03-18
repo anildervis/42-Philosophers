@@ -69,7 +69,6 @@ void	mutex_thread_finish(t_args *args)
 		pthread_mutex_destroy(&args->forks[i]);
 	pthread_mutex_unlock(&args->dead_check);
 	pthread_mutex_destroy(&args->dead_check);
-	pthread_mutex_unlock(&args->report);
 	pthread_mutex_destroy(&args->report);
 	exit(0);
 }
