@@ -38,7 +38,7 @@ void	init_args(int ac, char **av, t_args *args)
 		args->philo[i]->args = args;
 		args->philo[i]->last_meal_time = get_miliseconds();
 	}
-	args->start_time = get_miliseconds();
+	args->total_meal_count = 0;
 }
 
 void	mutex_thread_create(t_args *args)
@@ -46,13 +46,13 @@ void	mutex_thread_create(t_args *args)
 	int	i;
 
 	i = -1;
-	args->total_meal_count = 0;
 	pthread_mutex_init(&args->report, NULL);
 	pthread_mutex_init(&args->dead_check, NULL);
 	pthread_mutex_init(&args->read, NULL);
 	while (++i < args->num_phil)
 		pthread_mutex_init(&args->forks[i], NULL);
 	i = -1;
+	args->start_time = get_miliseconds();
 	while (++i < args->num_phil)
 	{
 		pthread_create(&args->philo[i]->philo_thread,

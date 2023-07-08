@@ -6,7 +6,7 @@
 /*   By: aderviso <aderviso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:18:33 by aderviso          #+#    #+#             */
-/*   Updated: 2023/07/08 16:57:53 by aderviso         ###   ########.fr       */
+/*   Updated: 2023/07/08 17:17:42 by aderviso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,21 @@ void	check_finish(t_args *args, int num_phil, int max_eat, int die_time)
 	{
 		i = -1;
 		while (++i < num_phil)
-		{
-			if (time_dif(read_val(&args->read, &args->philo[i]->last_meal_time)) > die_time)
+		{			
+			if (time_dif(read_val(&args->read,
+						&args->philo[i]->last_meal_time)) > die_time)
 			{
-				pthread_mutex_lock(&args->dead_check);
 				print_situation(PRINT_DIE, args->philo[i], num_phil);
 				pthread_mutex_lock(&args->report);
 				write_val(&args->read, &args->is_any_dead, 1);
 				mutex_thread_finish(args, num_phil);
 			}
 		}
-		if (max_eat != 0 && read_val(&args->read, &args->total_meal_count) == num_phil)
+		if (max_eat != 0 && read_val(&args->read,
+				&args->total_meal_count) == num_phil)
 		{
 			write_val(&args->read, &args->is_any_dead, 1);
-			pthread_mutex_lock(&args->dead_check);
+			pthread_mutex_lock(&args->report);
 			mutex_thread_finish(args, num_phil);
 		}
 		usleep(100);
