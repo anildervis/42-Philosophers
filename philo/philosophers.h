@@ -51,6 +51,7 @@ typedef struct s_args
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	dead_check;
 	pthread_mutex_t	read;
+	pthread_mutex_t	is_dead;
 }	t_args;
 
 // -------------- philo_utils.c --------------

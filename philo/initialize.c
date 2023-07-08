@@ -49,6 +49,7 @@ void	mutex_thread_create(t_args *args)
 	pthread_mutex_init(&args->report, NULL);
 	pthread_mutex_init(&args->dead_check, NULL);
 	pthread_mutex_init(&args->read, NULL);
+	pthread_mutex_init(&args->is_dead, NULL);
 	while (++i < args->num_phil)
 		pthread_mutex_init(&args->forks[i], NULL);
 	i = -1;
@@ -69,6 +70,7 @@ void	mutex_thread_finish(t_args *args, int num_phil)
 	while (++i < num_phil)
 		pthread_mutex_destroy(&args->forks[i]);
 	pthread_mutex_destroy(&args->dead_check);
+	pthread_mutex_destroy(&args->is_dead);
 	pthread_mutex_destroy(&args->report);
 	pthread_mutex_destroy(&args->read);
 	free(args->forks);

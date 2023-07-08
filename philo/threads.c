@@ -6,7 +6,7 @@
 /*   By: aderviso <aderviso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:18:33 by aderviso          #+#    #+#             */
-/*   Updated: 2023/07/08 17:17:42 by aderviso         ###   ########.fr       */
+/*   Updated: 2023/07/08 18:15:53 by aderviso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ void	*threads(void *x)
 	eat_time = read_val(&philo->args->read, &philo->args->time_to_eat);
 	if (philo->id % 2)
 		u_sleep(100);
-	while (!read_val(&philo->args->read, &philo->args->is_any_dead)
-		&& (max_eat == 0 || read_val(&philo->args->read,
-				&philo->args->total_meal_count) != max_eat))
+	while (!read_val(&philo->args->is_dead, &philo->args->is_any_dead))
 	{
 		take_forks(philo->args, philo, phil_num);
 		eat(philo->args, philo, max_eat, eat_time);
@@ -60,7 +58,7 @@ void	check_finish(t_args *args, int num_phil, int max_eat, int die_time)
 {
 	int	i;
 
-	while (!(read_val(&args->read, &args->is_any_dead)))
+	while (!(read_val(&args->is_dead, &args->is_any_dead)))
 	{
 		i = -1;
 		while (++i < num_phil)
@@ -70,18 +68,18 @@ void	check_finish(t_args *args, int num_phil, int max_eat, int die_time)
 			{
 				print_situation(PRINT_DIE, args->philo[i], num_phil);
 				pthread_mutex_lock(&args->report);
-				write_val(&args->read, &args->is_any_dead, 1);
+				write_val(&args->is_dead, &args->is_any_dead, 1);
 				mutex_thread_finish(args, num_phil);
 			}
 		}
 		if (max_eat != 0 && read_val(&args->read,
 				&args->total_meal_count) == num_phil)
 		{
-			write_val(&args->read, &args->is_any_dead, 1);
+			write_val(&args->is_dead, &args->is_any_dead, 1);
 			pthread_mutex_lock(&args->report);
 			mutex_thread_finish(args, num_phil);
 		}
-		usleep(100);
+		usleep(500);
 	}
 }
 
@@ -91,8 +89,7 @@ void	print_situation(int type, t_philo *philo, int phil_num)
 
 	args = philo->args;
 	pthread_mutex_lock(&args->report);
-	if ((!read_val(&args->read, &args->is_any_dead))
-		&& read_val(&args->read, &args->total_meal_count) != phil_num)
+	if (!read_val(&args->is_dead, &args->is_any_dead))
 	{
 		printf("%d %d ", time_dif(read_val(&args->read, &args->start_time)),
 			read_val(&args->read, &philo->id) + 1);
