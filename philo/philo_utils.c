@@ -34,7 +34,7 @@ void	u_sleep(long long time)
 	{
 		if (time_dif(i) >= time)
 			break ;
-		usleep(500);
+		usleep(200);
 	}
 }
 

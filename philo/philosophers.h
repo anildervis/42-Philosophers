@@ -50,6 +50,7 @@ typedef struct s_args
 	pthread_mutex_t	report;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	dead_check;
+	pthread_mutex_t	read;
 }	t_args;
 
 // -------------- philo_utils.c --------------
@@ -62,12 +63,18 @@ int		ft_atoi(char *str);
 // -------------- initialize.c --------------
 void	init_args(int ac, char **av, t_args *args);
 void	mutex_thread_create(t_args *args);
-void	mutex_thread_finish(t_args *args);
+void	mutex_thread_finish(t_args *args, int num_phil);
+
+// -------------- threads.c --------------
+void	*threads(void *args);
+int		read_val(pthread_mutex_t *lock, int *data);
+void	write_val(pthread_mutex_t *lock, int *data, int new_data);
+void	check_finish(t_args *args, int num_phil, int max_eat, int die_time);
+void	print_situation(int type, t_philo *philo, int phil_num);
 
 // -------------- routine.c --------------
-void	*routine(void *args);
-void	check_finish(t_args *args);
-void	eat(t_philo *philo);
-void	print_situation(int type, t_philo *philo);
+void	take_forks(t_args *args, t_philo *philo, int phil_num);
+void	eat(t_args *args, t_philo *philo, int max_eat, int eat_time);
+void	leave_forks(t_args *args, t_philo *philo, int sleep_time, int phil_num);
 
 #endif

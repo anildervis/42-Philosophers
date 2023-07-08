@@ -1,9 +1,9 @@
 NAME = philo
 CC = gcc
-FLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra
 RM = rm -f
 INCLUDE = -pthread
-SRCS = main.c philo_utils.c initialize.c routine.c
+SRCS = main.c philo_utils.c initialize.c routine.c threads.c
 OBJS = $(SRCS:.c=.o)
 HEADER = philosophers.h
 
@@ -22,7 +22,7 @@ WHITE = \033[0;97m
 all: $(NAME) $(HEADER)
 
 $(NAME): $(OBJS)
-	$(CC) $(INCLUDE) $(FLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(INCLUDE) $(CFLAGS) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)All compiled.$(DEF_COLOR)"
 
 clean:
