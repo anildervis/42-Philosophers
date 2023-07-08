@@ -6,7 +6,7 @@
 /*   By: aderviso <aderviso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 19:18:33 by aderviso          #+#    #+#             */
-/*   Updated: 2023/07/08 18:15:53 by aderviso         ###   ########.fr       */
+/*   Updated: 2023/07/08 18:20:29 by aderviso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	*threads(void *x)
 		take_forks(philo->args, philo, phil_num);
 		eat(philo->args, philo, max_eat, eat_time);
 		leave_forks(philo->args, philo, sleep_time, phil_num);
-		print_situation(PRINT_THINK, philo, phil_num);
+		print_situation(PRINT_THINK, philo);
 	}
 	return (NULL);
 }
@@ -66,7 +66,7 @@ void	check_finish(t_args *args, int num_phil, int max_eat, int die_time)
 			if (time_dif(read_val(&args->read,
 						&args->philo[i]->last_meal_time)) > die_time)
 			{
-				print_situation(PRINT_DIE, args->philo[i], num_phil);
+				print_situation(PRINT_DIE, args->philo[i]);
 				pthread_mutex_lock(&args->report);
 				write_val(&args->is_dead, &args->is_any_dead, 1);
 				mutex_thread_finish(args, num_phil);
@@ -83,7 +83,7 @@ void	check_finish(t_args *args, int num_phil, int max_eat, int die_time)
 	}
 }
 
-void	print_situation(int type, t_philo *philo, int phil_num)
+void	print_situation(int type, t_philo *philo)
 {
 	t_args	*args;
 

@@ -71,7 +71,7 @@ void	*threads(void *args);
 int		read_val(pthread_mutex_t *lock, int *data);
 void	write_val(pthread_mutex_t *lock, int *data, int new_data);
 void	check_finish(t_args *args, int num_phil, int max_eat, int die_time);
-void	print_situation(int type, t_philo *philo, int phil_num);
+void	print_situation(int type, t_philo *philo);
 
 // -------------- routine.c --------------
 void	take_forks(t_args *args, t_philo *philo, int phil_num);
